@@ -1,0 +1,11 @@
+<Solution>
+    <Folder Name="/src/">
+        <Project Path="src/Haitch.Unions.AspNetCore/Haitch.Unions.AspNetCore.csproj" />
+        <Project Path="src/Haitch.Unions.TUnit.Assertions/Haitch.Unions.TUnit.Assertions.csproj" />
+        <Project Path="src/Haitch.Unions/Haitch.Unions.csproj" />
+    </Folder>
+    <Folder Name="/tests/">
+        <Project Path="tests/Haitch.Unions.AspNetCore.UnitTests/Haitch.Unions.AspNetCore.UnitTests.csproj" />
+        <Project Path="tests/Haitch.Unions.UnitTests/Haitch.Unions.UnitTests.csproj" />
+    </Folder>
+</Solution>
