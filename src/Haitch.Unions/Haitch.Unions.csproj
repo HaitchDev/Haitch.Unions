@@ -5,15 +5,8 @@
     </ItemGroup>
 
     <PropertyGroup>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    </PropertyGroup>
-
-    <PropertyGroup>
         <PackageId>Haitch.Unions</PackageId>
         <Description>Result and Optional union types for .NET with fluent, async-friendly pipelines and typed errors.</Description>
         <PackageTags>result;optional;union;errors;functional;railway;haitch;foundational</PackageTags>
-        <PackageIcon>icon.png</PackageIcon>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 </Project>

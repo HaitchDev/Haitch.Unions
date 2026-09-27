@@ -4,10 +4,6 @@
         <None Include="..\..\README.md" Pack="true" PackagePath="" />
     </ItemGroup>
 
-    <PropertyGroup>
-        <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    </PropertyGroup>
-
     <ItemGroup>
         <FrameworkReference Include="Microsoft.AspNetCore.App" />
     </ItemGroup>
@@ -20,8 +16,5 @@
         <PackageId>Haitch.Unions.AspNetCore</PackageId>
         <Description>ASP.NET Core integration for Haitch.Unions.</Description>
         <PackageTags>result;optional;union;errors;functional;railway;haitch;foundational;aspnetcore;problemdetails</PackageTags>
-        <PackageIcon>icon.png</PackageIcon>
-        <PackageReadmeFile>README.md</PackageReadmeFile>
-        <PackageLicenseExpression>MIT</PackageLicenseExpression>
     </PropertyGroup>
 </Project>
