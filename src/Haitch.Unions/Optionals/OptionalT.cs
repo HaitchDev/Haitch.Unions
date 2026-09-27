@@ -22,20 +22,14 @@ public readonly struct Optional<T> : IUnion, IEquatable<Optional<T>>
     }
 
     /// <summary>
-    /// Creates an optional holding <paramref name="value"/>, or none if it is null.
+    /// Creates an optional holding <paramref name="value"/>.
     /// </summary>
-    public Optional(T? value)
+    /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
+    public Optional(T value)
     {
-        if (value is null)
-        {
-            _value = default!;
-            IsSome = false;
-        }
-        else
-        {
-            _value = value;
-            IsSome = true;
-        }
+        ArgumentNullException.ThrowIfNull(value);
+        _value = value;
+        IsSome = true;
     }
 
     /// <summary>
@@ -88,11 +82,8 @@ public readonly struct Optional<T> : IUnion, IEquatable<Optional<T>>
     /// Creates an optional holding <paramref name="value"/>.
     /// </summary>
     /// <exception cref="ArgumentNullException"><paramref name="value"/> is null.</exception>
-    public static Optional<T> Some(T value)
-    {
-        ArgumentNullException.ThrowIfNull(value);
-        return new(value);
-    }
+    public static Optional<T> Some(T value) =>
+        new(value);
 
     /// <summary>
     /// Creates an empty optional.
@@ -102,7 +93,10 @@ public readonly struct Optional<T> : IUnion, IEquatable<Optional<T>>
     /// <summary>
     /// Creates an optional holding <paramref name="value"/>, or none if it is null.
     /// </summary>
-    public static Optional<T> From(T? value) => new(value);
+    public static Optional<T> From(T? value) =>
+        value is null
+            ? new()
+            : new(value);
 
     /// <summary>
     /// Converts a value to an optional, or none if it is null.

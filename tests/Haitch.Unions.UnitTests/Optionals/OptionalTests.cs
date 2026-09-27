@@ -121,10 +121,9 @@ public class OptionalTests
     }
 
     [Test]
-    public async Task ShouldBeNoneFromValueConstructorWhenNull()
+    public async Task ShouldThrowFromValueConstructorWhenNull()
     {
-        var optional = new Optional<string>(null);
-        await optional.AssertNone();
+        await Assert.That(() => new Optional<string>(null!)).Throws<ArgumentNullException>();
     }
 
     [Test]
@@ -280,5 +279,79 @@ public class OptionalTests
     public async Task ShouldFormatNoneAsString()
     {
         await Assert.That(Optional<int>.None().ToString()).IsEqualTo("None");
+    }
+
+    [Test]
+    public async Task ShouldMatchSomeArmInSwitchExpression()
+    {
+        Optional<int> optional = 2;
+
+        var matched = optional switch
+        {
+            int value => $"some:{value * 10}",
+            None => "none",
+        };
+
+        await Assert.That(matched).IsEqualTo("some:20");
+    }
+
+    [Test]
+    public async Task ShouldMatchNoneArmInSwitchExpression()
+    {
+        var optional = Optional<int>.None();
+
+        var matched = optional switch
+        {
+            int value => $"some:{value}",
+            None => "none",
+        };
+
+        await Assert.That(matched).IsEqualTo("none");
+    }
+
+    [Test]
+    public async Task ShouldMatchNoneArmInSwitchExpressionWhenDefault()
+    {
+        Optional<int> optional = default;
+
+        var matched = optional switch
+        {
+            int value => $"some:{value}",
+            None => "none",
+        };
+
+        await Assert.That(matched).IsEqualTo("none");
+    }
+
+    [Test]
+    public async Task ShouldMatchSomeViaIsPattern()
+    {
+        Optional<int> optional = 7;
+        var isSome = optional is int matchedValue && matchedValue == 7;
+
+        await Assert.That(isSome).IsTrue();
+    }
+
+    [Test]
+    public async Task ShouldMatchNoneViaIsPattern()
+    {
+        Optional<int> optional = default;
+        var isNone = optional is None;
+
+        await Assert.That(isNone).IsTrue();
+    }
+
+    [Test]
+    public async Task ShouldMatchSomeArmInSwitchExpressionForReferenceType()
+    {
+        Optional<string> optional = "value";
+
+        var matched = optional switch
+        {
+            string value => $"some:{value}",
+            None => "none",
+        };
+
+        await Assert.That(matched).IsEqualTo("some:value");
     }
 }

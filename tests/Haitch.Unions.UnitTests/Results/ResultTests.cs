@@ -533,4 +533,93 @@ public class ResultTests
         Result<int> result = default;
         await Assert.That(result.ToString()).IsEqualTo("Error(Result.Uninitialized)");
     }
+
+    [Test]
+    public async Task ShouldMatchOkArmInSwitchExpression()
+    {
+        Result<int> result = 2;
+
+        var matched = result switch
+        {
+            int value => $"ok:{value * 10}",
+            Error error => $"error:{error.Code}",
+        };
+
+        await Assert.That(matched).IsEqualTo("ok:20");
+    }
+
+    [Test]
+    public async Task ShouldMatchErrorArmInSwitchExpression()
+    {
+        Result<int> result = TestError;
+
+        var matched = result switch
+        {
+            int value => $"ok:{value}",
+            Error error => $"error:{error.Code}",
+        };
+
+        await Assert.That(matched).IsEqualTo($"error:{TestError.Code}");
+    }
+
+    [Test]
+    public async Task ShouldMatchErrorArmInSwitchExpressionWhenDefault()
+    {
+        Result<int> result = default;
+
+        var matched = result switch
+        {
+            int value => $"ok:{value}",
+            Error error => error.Code,
+        };
+
+        await Assert.That(matched).IsEqualTo(Result.UninitializedError.Code);
+    }
+
+    [Test]
+    public async Task ShouldMatchSubtypeErrorArmBeforeBaseErrorArmInSwitchExpression()
+    {
+        Result<int> result = new NotFoundError("User.NotFound", "User 42 not found");
+
+        var matched = result switch
+        {
+            int value => $"ok:{value}",
+            NotFoundError notFound => $"not-found:{notFound.Code}",
+            Error error => $"error:{error.Code}",
+        };
+
+        await Assert.That(matched).IsEqualTo("not-found:User.NotFound");
+    }
+
+    [Test]
+    public async Task ShouldMatchOkViaIsPattern()
+    {
+        Result<int> result = 42;
+        var isOk = result is int matchedValue && matchedValue == 42;
+
+        await Assert.That(isOk).IsTrue();
+    }
+
+    [Test]
+    public async Task ShouldMatchErrorViaIsPattern()
+    {
+        Result<int> result = TestError;
+        var isError = result is Error matchedError && matchedError.Code == TestError.Code;
+
+        await Assert.That(isError).IsTrue();
+    }
+
+    [Test]
+    public async Task ShouldMatchOkArmInSwitchExpressionForReferenceType()
+    {
+        Result<string> result = "value";
+
+        var matched = result switch
+        {
+            string value => $"ok:{value}",
+            Error error => $"error:{error.Code}",
+        };
+
+        await Assert.That(matched).IsEqualTo("ok:value");
+    }
 }

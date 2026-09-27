@@ -28,6 +28,8 @@ var name = GetUser(42)
         onError: _ => "Anonymous");
 ```
 
+Both are C# unions, so they work with `switch` expressions.
+
 ## Documentation
 
 Full documentation is at [haitch.dev/libraries/unions](https://haitch.dev/libraries/unions/).
